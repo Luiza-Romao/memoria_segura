@@ -1,0 +1,603 @@
+/* =================================================================
+   MEMÓRIA SEGURA — design system
+   Pensado para idosos, cuidadores e familiares.
+   Princípios:
+     - Tipografia base 18px (1.5x o padrão)
+     - Botões mínimos de 56px de altura
+     - Alto contraste, paleta acolhedora
+     - Espaçamento generoso, foco visível
+   ================================================================= */
+
+:root {
+  /* --- Cores --- */
+  --bg:            #FAF7F2;   /* fundo: off-white quente */
+  --surface:       #FFFFFF;   /* cards */
+  --surface-warm:  #F4EFE6;   /* destaque sutil */
+  --border:        #E5E1D8;
+  --border-strong: #C8C0B0;
+
+  --primary:       #1E3A5F;   /* azul profundo confiável */
+  --primary-hover: #152D49;
+  --primary-soft:  #E8EEF5;
+
+  --accent:        #5B8B6F;   /* verde calmo: sucesso, ação positiva */
+  --accent-hover:  #4A7359;
+  --accent-soft:   #E8F0EB;
+
+  --alert:         #B85C5C;   /* vermelho suave: perigo */
+  --alert-hover:   #9D4848;
+  --alert-soft:    #F5E4E4;
+
+  --text:          #1A1F2E;   /* quase preto */
+  --text-muted:    #5C6478;
+  --text-on-dark:  #FAF7F2;
+
+  /* --- Tipografia --- */
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body:    "Nunito", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+
+  /* --- Espaçamento, sombras, raios --- */
+  --radius-sm: 10px;
+  --radius:    16px;
+  --radius-lg: 24px;
+
+  --shadow-sm: 0 1px 2px rgba(26, 31, 46, 0.04),
+               0 2px 6px rgba(26, 31, 46, 0.04);
+  --shadow:    0 4px 12px rgba(26, 31, 46, 0.06),
+               0 1px 3px rgba(26, 31, 46, 0.04);
+  --shadow-lg: 0 16px 40px rgba(26, 31, 46, 0.10),
+               0 4px 12px rgba(26, 31, 46, 0.06);
+
+  --transition: 180ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- Reset enxuto --- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 18px;          /* base maior que o padrão */
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Textura sutil de fundo para dar profundidade */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(at 20% 0%, rgba(30, 58, 95, 0.04) 0px, transparent 50%),
+    radial-gradient(at 90% 100%, rgba(91, 139, 111, 0.05) 0px, transparent 50%);
+  pointer-events: none;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--text);
+  margin: 0;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+h1 { font-size: clamp(2rem, 1.4rem + 2vw, 2.75rem); }
+h2 { font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); }
+h3 { font-size: 1.375rem; }
+
+p { margin: 0; }
+
+button { font-family: inherit; }
+
+/* Foco visível para acessibilidade */
+:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* =================================================================
+   LAYOUT
+   ================================================================= */
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.brand-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--primary);
+  color: var(--text-on-dark);
+  display: grid;
+  place-items: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.app-main {
+  flex: 1;
+  padding: 40px 32px 80px;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 32px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.page-header h1 {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.page-header .subtitle {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  margin-top: 6px;
+}
+
+/* =================================================================
+   CARDS
+   ================================================================= */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.card-hover:hover {
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+.card-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+/* =================================================================
+   BOTÕES — generosos para o público
+   ================================================================= */
+
+.btn {
+  min-height: 56px;
+  padding: 0 28px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background var(--transition), transform var(--transition),
+              box-shadow var(--transition);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+
+.btn:active { transform: translateY(1px); }
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-sm);
+}
+.btn-primary:hover { background: var(--primary-hover); box-shadow: var(--shadow); }
+
+.btn-accent {
+  background: var(--accent);
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-sm);
+}
+.btn-accent:hover { background: var(--accent-hover); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--border-strong);
+}
+.btn-ghost:hover { background: var(--surface-warm); border-color: var(--primary); }
+
+.btn-danger {
+  background: transparent;
+  color: var(--alert);
+  border: 2px solid transparent;
+}
+.btn-danger:hover { background: var(--alert-soft); }
+
+.btn-sm {
+  min-height: 44px;
+  padding: 0 18px;
+  font-size: 0.95rem;
+}
+
+.btn-block { width: 100%; }
+
+/* =================================================================
+   FORMS
+   ================================================================= */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: 1.0625rem;
+  color: var(--text);
+}
+
+.form-hint {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.input, .textarea, .select {
+  font-family: inherit;
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 1.0625rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  min-height: 56px;
+}
+
+.input:focus, .textarea:focus, .select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-soft);
+}
+
+.textarea {
+  min-height: 110px;
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 640px) {
+  .form-row { grid-template-columns: 1fr; }
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+/* =================================================================
+   LISTAS DE REGISTROS
+   ================================================================= */
+
+.list { display: flex; flex-direction: column; gap: 14px; }
+
+.list-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.list-item:hover {
+  box-shadow: var(--shadow);
+  transform: translateX(2px);
+}
+
+.list-item.is-done {
+  background: var(--accent-soft);
+  border-color: #C5DBCB;
+}
+
+.list-item-main { flex: 1; min-width: 0; }
+
+.list-item-title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.list-item-meta {
+  color: var(--text-muted);
+  font-size: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.list-item-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 2px dashed var(--border-strong);
+  border-radius: var(--radius);
+}
+
+.empty-state .icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+  display: block;
+}
+
+/* =================================================================
+   BADGES E PILLS
+   ================================================================= */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: var(--surface-warm);
+  color: var(--text-muted);
+}
+
+.pill.is-time {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.pill.is-done {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* =================================================================
+   LOGIN
+   ================================================================= */
+
+.login-screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(at 30% 20%, rgba(30, 58, 95, 0.08) 0px, transparent 50%),
+    radial-gradient(at 70% 80%, rgba(91, 139, 111, 0.10) 0px, transparent 50%),
+    var(--bg);
+}
+
+.login-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: var(--shadow-lg);
+}
+
+.login-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.login-brand .brand-mark { width: 64px; height: 64px; font-size: 1.8rem; border-radius: 18px; }
+
+.login-brand h1 {
+  font-size: 2.25rem;
+  color: var(--primary);
+}
+
+.login-brand .tagline {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  text-align: center;
+}
+
+/* =================================================================
+   DASHBOARD — grade de funcionalidades
+   ================================================================= */
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 22px;
+}
+
+.feature-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 30px 28px;
+  text-decoration: none;
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition), transform var(--transition),
+              border-color var(--transition);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::after {
+  content: "→";
+  position: absolute;
+  bottom: 22px;
+  right: 26px;
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  transition: transform var(--transition), color var(--transition);
+}
+
+.feature-card:hover {
+  box-shadow: var(--shadow);
+  transform: translateY(-4px);
+  border-color: var(--primary);
+}
+
+.feature-card:hover::after {
+  transform: translateX(6px);
+  color: var(--primary);
+}
+
+.feature-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-size: 1.75rem;
+  background: var(--primary-soft);
+}
+
+.feature-card.color-green .feature-icon { background: var(--accent-soft); }
+.feature-card.color-amber .feature-icon { background: #FBF1DC; }
+.feature-card.color-rose  .feature-icon { background: var(--alert-soft); }
+
+.feature-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.feature-description {
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* =================================================================
+   ALERTAS / TOASTS
+   ================================================================= */
+
+.alert {
+  padding: 16px 20px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.alert-error {
+  background: var(--alert-soft);
+  color: var(--alert-hover);
+  border-left: 4px solid var(--alert);
+}
+
+.alert-success {
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+  border-left: 4px solid var(--accent);
+}
+
+/* =================================================================
+   UTILITÁRIOS
+   ================================================================= */
+
+.text-muted { color: var(--text-muted); }
+.text-center { text-align: center; }
+.mt-2 { margin-top: 16px; }
+.mt-3 { margin-top: 24px; }
+.mb-2 { margin-bottom: 16px; }
+.flex { display: flex; }
+.gap-2 { gap: 12px; }
+.gap-3 { gap: 20px; }
+
+/* Responsivo: tablets/mobile */
+@media (max-width: 768px) {
+  .app-header { padding: 14px 20px; }
+  .app-main { padding: 24px 20px 60px; }
+  .card { padding: 22px; }
+  .login-card { padding: 36px 28px; }
+  .list-item { flex-direction: column; align-items: stretch; }
+  .list-item-actions { justify-content: flex-end; }
+}
