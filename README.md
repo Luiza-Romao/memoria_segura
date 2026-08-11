@@ -70,7 +70,7 @@ Frontend disponível em **http://localhost:5173** (abre automaticamente no naveg
 
 ## 3) Primeiro uso
 
-**Opção A — Entrar como convidado.** No login, clique em "Continuar como convidado".
+**Opção A — Criar o cadastro na interface visual.** No login, localize 'Ainda não tem conta?' e clique no botão **Cadastre-se**.
 
 **Opção B — Criar um usuário pelo Swagger.** Acesse <http://localhost:8080/swagger-ui.html>,
 expanda o `POST /usuarios`, clique em "Try it out" e envie:
