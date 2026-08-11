@@ -1,8 +1,8 @@
 # Memória Segura
 
 Aplicativo de auxílio a idosos, cuidadores e familiares.
-Permite cadastrar **medicamentos**, **rotina diária**, **cuidadores** e a
-**ficha de saúde do idoso**, com login simples.
+O sistema contempla funcionalidades como **controle de rotina, lembretes, monitoramento, registro de medicamentos, comunicação entre cuidadores e familiares**. A proposta utiliza conceitos de UML, Engenharia de Software e Programação Orientada a Objetos, priorizando acessibilidade e cuidado humanizado.
+
 
 ```
 memoria-segura/
@@ -17,12 +17,14 @@ memoria-segura/
 | Ferramenta | Versão sugerida |
 |---|---|
 | Java JDK | 21+ |
-| Maven | 3.9+ (ou use o Maven embutido do IntelliJ) |
+| Maven | 3.9+ |
 | MySQL | 8.x rodando em `localhost:3306` |
 | Node.js | 18+ |
 | npm | 9+ |
 
 ---
+
+# Como rodar o Memória segura em sua máquina
 
 ## 1) Subir o backend (IntelliJ)
 
@@ -35,8 +37,7 @@ memoria-segura/
    ```
    Ajuste se o seu MySQL usa outro login.
 4. O parâmetro `createDatabaseIfNotExist=true` na URL faz o MySQL **criar a database
-   `memoria_segura` automaticamente** na primeira execução — não precisa rodar
-   nenhum script.
+   `memoria_segura` automaticamente** na primeira execução .
 5. Rode a classe `MemoriaSeguraApplication` (ícone ▶️ verde ao lado do `main`).
 6. Backend disponível em **http://localhost:8080**.
 7. Documentação interativa da API em **http://localhost:8080/swagger-ui.html**.
@@ -68,8 +69,6 @@ Frontend disponível em **http://localhost:5173** (abre automaticamente no naveg
 ---
 
 ## 3) Primeiro uso
-
-Como ainda não há tela de cadastro pública, o jeito mais rápido de testar é:
 
 **Opção A — Entrar como convidado.** No login, clique em "Continuar como convidado".
 
